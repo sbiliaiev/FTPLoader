@@ -1,0 +1,12 @@
+C:\dev\FTPLoader\FTPLoader\bin\Debug\FTPLoader.exe.config
+C:\dev\FTPLoader\FTPLoader\bin\Debug\FTPLoader.exe
+C:\dev\FTPLoader\FTPLoader\bin\Debug\FTPLoader.pdb
+C:\dev\FTPLoader\FTPLoader\bin\Debug\FluentFTP.dll
+C:\dev\FTPLoader\FTPLoader\bin\Debug\FluentFTP.xml
+C:\dev\FTPLoader\FTPLoader\obj\Debug\FTPLoader.csprojResolveAssemblyReference.cache
+C:\dev\FTPLoader\FTPLoader\obj\Debug\FTPLoader.Form1.resources
+C:\dev\FTPLoader\FTPLoader\obj\Debug\FTPLoader.Properties.Resources.resources
+C:\dev\FTPLoader\FTPLoader\obj\Debug\FTPLoader.csproj.GenerateResource.Cache
+C:\dev\FTPLoader\FTPLoader\obj\Debug\FTPLoader.csproj.CoreCompileInputs.cache
+C:\dev\FTPLoader\FTPLoader\obj\Debug\FTPLoader.exe
+C:\dev\FTPLoader\FTPLoader\obj\Debug\FTPLoader.pdb
