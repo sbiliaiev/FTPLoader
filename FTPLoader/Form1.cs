@@ -83,11 +83,21 @@ namespace FTPLoader
 
         private void button1_Click(object sender, EventArgs e)
         {
+            DateTime CurrentDate = DateTime.Now;
+            string CurrentDateStr = CurrentDate.ToString("yyyyMMdd");
+
             foreach (var city in checkedListBox1.CheckedItems)
             {
                 foreach (FtpListItem item in client.GetListing(city.ToString() + "/Reports"))
                 {
                     Console.WriteLine("item in city" + item.Name);
+                    string FileName = item.Name;
+                    int Index = FileName.IndexOf("Report");
+                    string FileNameDate = FileName.Substring(Index + 6, 8);
+                    if (FileNameDate.Equals(CurrentDateStr))
+                    {
+                        client.DownloadFile(@"C:\test\LeraFTPLoader\" + item.Name, item.FullName);
+                    }
                 }
             }
         }
