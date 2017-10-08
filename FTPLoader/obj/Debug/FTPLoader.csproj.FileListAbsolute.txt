@@ -11,3 +11,5 @@ C:\dev\FTPLoader\FTPLoader\obj\Debug\FTPLoader.csproj.CoreCompileInputs.cache
 C:\dev\FTPLoader\FTPLoader\obj\Debug\FTPLoader.exe
 C:\dev\FTPLoader\FTPLoader\obj\Debug\FTPLoader.pdb
 C:\dev\FTPLoader\FTPLoader\obj\Debug\FTPLoader.Prompt.resources
+C:\dev\FTPLoader\FTPLoader\bin\Debug\Newtonsoft.Json.dll
+C:\dev\FTPLoader\FTPLoader\bin\Debug\Newtonsoft.Json.xml

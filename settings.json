@@ -1,0 +1,6 @@
+{
+	"server": "127.0.0.1",
+	"port": "54218",
+	"login": "dev_user",
+	"password": "dev_user_pass"
+}

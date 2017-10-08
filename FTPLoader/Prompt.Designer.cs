@@ -51,7 +51,7 @@
             this.downloadPrevious.Name = "downloadPrevious";
             this.downloadPrevious.Size = new System.Drawing.Size(205, 61);
             this.downloadPrevious.TabIndex = 1;
-            this.downloadPrevious.Text = "Скачать за вчера";
+            this.downloadPrevious.Text = "Скачать за вчера (если есть)";
             this.downloadPrevious.UseVisualStyleBackColor = true;
             this.downloadPrevious.Click += new System.EventHandler(this.downloadPrevious_Click);
             // 

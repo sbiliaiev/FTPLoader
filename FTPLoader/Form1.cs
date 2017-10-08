@@ -9,6 +9,11 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using FluentFTP;
 using System.Net;
+using Newtonsoft;
+using System.IO;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.Reflection;
 
 namespace FTPLoader
 {
@@ -21,25 +26,53 @@ namespace FTPLoader
         public Form1()
         {
             InitializeComponent();
-
-            string test = "test string";
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            client = new FtpClient("127.0.0.1");
-            client.Port = 54218;
-            client.Credentials = new NetworkCredential("dev_user", "dev_user_pass");
-            client.Connect();
-
-            List<string> cityList = new List<string>();
-
-            foreach (FtpListItem item in client.GetListing("/"))
+            StreamReader file;
+            JsonTextReader reader;
+            JObject o2;
+            try
             {
-                cityList.Add(item.Name);
-            }
+                Console.WriteLine("PATH " + Path.Combine(Environment.CurrentDirectory, "settings.json"));
+                file = File.OpenText(Path.Combine(Directory.GetCurrentDirectory(), "settings.json"));
+                reader = new JsonTextReader(file);
+                o2 = (JObject)JToken.ReadFrom(reader);
+            
 
-            checkedListBox1.DataSource = cityList;
+                Console.WriteLine("JSON " + o2.ToString());
+                Console.WriteLine("LOGIN " + o2["login"]);
+                Console.WriteLine("LOGIN " + o2["port"]);
+
+
+                /*client = new FtpClient("127.0.0.1");
+                client.Port = 54218;
+                client.Credentials = new NetworkCredential("dev_user", "dev_user_pass");*/
+                client = new FtpClient((string)o2["server"]);
+                var tmp = (int)o2["port"];
+                Console.WriteLine("TYPE " + tmp.GetType());
+                client.Port = tmp;
+                client.Credentials = new NetworkCredential((string)o2["login"], (string)o2["password"]);
+                NetworkCredential test1 = new NetworkCredential("test1_user", "test1_pass");
+                NetworkCredential test2 = new NetworkCredential((string)o2["login"], (string)o2["password"]);
+                client.Connect();
+
+                List<string> cityList = new List<string>();
+
+                foreach (FtpListItem item in client.GetListing("/"))
+                {
+                    cityList.Add(item.Name);
+                }
+
+                checkedListBox1.DataSource = cityList;
+            }
+            catch (Exception error)
+            {
+                Console.WriteLine("ERROR" + error.ToString());
+                MessageBox.Show("Please, Create settings.json file");
+                this.Close();
+            }
         }
 
         private void checkedListBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -74,7 +107,7 @@ namespace FTPLoader
                     Console.WriteLine("FileNameDate" + FileNameDate);
                     if (FileNameDate.Equals(CurrentDateStr))
                     {
-                        client.DownloadFile(@"C:\test\LeraFTPLoader\" + CurrentDate.ToString("yyyy_MM_dd") + "\\" + item.Name, item.FullName);
+                        client.DownloadFile(Environment.CurrentDirectory +  "\\LeraFTPLoader\\" + CurrentDate.ToString("yyyy_MM_dd") + "\\" + item.Name, item.FullName);
                     } else
                     {
                         Prompt prompt = new Prompt();
@@ -96,7 +129,7 @@ namespace FTPLoader
             if (client.FileExists(PreviousFileFullName))
             {
                 Console.WriteLine("EST");
-                client.DownloadFile(@"C:\test\LeraFTPLoader\" + DateTime.Now.ToString("yyyy_MM_dd") + "\\" + PreviousFileName, PreviousFileFullName);
+                client.DownloadFile(Environment.CurrentDirectory + "\\LeraFTPLoader\\" + DateTime.Now.ToString("yyyy_MM_dd") + "\\" + PreviousFileName, PreviousFileFullName);
             }
             Console.WriteLine("PreviousFileName " + PreviousFileName);
             Console.WriteLine("PreviousFileFullName " + PreviousFileFullName);
