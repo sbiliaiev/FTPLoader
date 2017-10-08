@@ -10,3 +10,4 @@ C:\dev\FTPLoader\FTPLoader\obj\Debug\FTPLoader.csproj.GenerateResource.Cache
 C:\dev\FTPLoader\FTPLoader\obj\Debug\FTPLoader.csproj.CoreCompileInputs.cache
 C:\dev\FTPLoader\FTPLoader\obj\Debug\FTPLoader.exe
 C:\dev\FTPLoader\FTPLoader\obj\Debug\FTPLoader.pdb
+C:\dev\FTPLoader\FTPLoader\obj\Debug\FTPLoader.Prompt.resources

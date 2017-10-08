@@ -14,7 +14,9 @@ namespace FTPLoader
 {
     public partial class Form1 : Form
     {
-        FtpClient client;
+        static FtpClient client;
+        public static string CurrentCity;
+        public static FtpListItem CurrentItem;
 
         public Form1()
         {
@@ -32,42 +34,12 @@ namespace FTPLoader
 
             List<string> cityList = new List<string>();
 
-            // get a list of files and directories in the "/htdocs" folder
             foreach (FtpListItem item in client.GetListing("/"))
             {
-
-                // if this is a file
-                if (item.Type == FtpFileSystemObjectType.File)
-                {
-
-                    // get the file size
-                    long size = client.GetFileSize(item.FullName);
-                    Console.WriteLine(size);
-
-                }
-
-                // get modified date/time of the file or folder
-                DateTime time = client.GetModifiedTime(item.FullName);
-
-                // calculate a hash for the file on the server side (default algorithm)
-                // FtpHash hash = client.GetHash(item.FullName);
-                Console.WriteLine(item.FullName);
                 cityList.Add(item.Name);
             }
 
-
             checkedListBox1.DataSource = cityList;
-
-            string str = "573Report20170930050115_AE";
-            Console.WriteLine(str);
-            int index;
-            index = str.IndexOf("Report");
-            Console.WriteLine("index:" + index);
-            string dateStr = str.Substring(index + 6, 8);
-            Console.WriteLine("date = " + dateStr);
-            DateTime currentDate = DateTime.Now;
-            string currentDateStr = currentDate.ToString("yyyyMMdd");
-            Console.WriteLine("current date str = " + currentDateStr);
         }
 
         private void checkedListBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -88,18 +60,46 @@ namespace FTPLoader
 
             foreach (var city in checkedListBox1.CheckedItems)
             {
-                foreach (FtpListItem item in client.GetListing(city.ToString() + "/Reports"))
-                {
-                    Console.WriteLine("item in city" + item.Name);
+                CurrentCity = city.ToString();
+                FtpListItem item = client.GetListing(city.ToString() + "/Reports").Last();
+                //foreach (FtpListItem item in client.GetListing(city.ToString() + "/Reports"))
+                //{
+                Console.WriteLine("FULL BOURNE " + item.FullName);
+                    CurrentItem = item;
+                    Console.WriteLine("HERERER " + item.Name.Substring(0, item.Name.IndexOf("Report")));
+                    Console.WriteLine("HERERER " + item.Name.Substring(item.Name.IndexOf("Report") + 14));
                     string FileName = item.Name;
                     int Index = FileName.IndexOf("Report");
                     string FileNameDate = FileName.Substring(Index + 6, 8);
+                    Console.WriteLine("FileNameDate" + FileNameDate);
                     if (FileNameDate.Equals(CurrentDateStr))
                     {
-                        client.DownloadFile(@"C:\test\LeraFTPLoader\" + item.Name, item.FullName);
+                        client.DownloadFile(@"C:\test\LeraFTPLoader\" + CurrentDate.ToString("yyyy_MM_dd") + "\\" + item.Name, item.FullName);
+                    } else
+                    {
+                        Prompt prompt = new Prompt();
+                        prompt.ShowDialog();
                     }
-                }
+                //}
             }
+        }
+
+        public static void download_Previous(FtpListItem item)
+        {
+            DateTime PreviousDate = DateTime.Now.AddDays(-1);
+            string PreviousFileName = item.Name.Substring(0, item.Name.IndexOf("Report"))
+                + "Report"
+                + PreviousDate.ToString("yyyyMMdd")
+                + item.Name.Substring(item.Name.IndexOf("Report") + 14);
+            string PreviousFileFullName = item.FullName.Substring(0, item.FullName.IndexOf(CurrentCity + "Report")) + PreviousFileName;
+
+            if (client.FileExists(PreviousFileFullName))
+            {
+                Console.WriteLine("EST");
+                client.DownloadFile(@"C:\test\LeraFTPLoader\" + DateTime.Now.ToString("yyyy_MM_dd") + "\\" + PreviousFileName, PreviousFileFullName);
+            }
+            Console.WriteLine("PreviousFileName " + PreviousFileName);
+            Console.WriteLine("PreviousFileFullName " + PreviousFileFullName);
         }
     }
 }
